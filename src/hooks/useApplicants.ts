@@ -11,6 +11,7 @@ export interface Applicant {
   age: number;
   passport_number: string;
   phone_number: string;
+  job: string;
   status: 'accepted' | 'pending' | 'rejected';
   created_at?: string;
   updated_at?: string;

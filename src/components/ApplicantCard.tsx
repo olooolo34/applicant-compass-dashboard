@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar } from 'lucide-react';
+import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase } from 'lucide-react';
 
 interface ApplicantCardProps {
   applicant: Applicant;
@@ -80,6 +80,10 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
               <div className="flex items-center space-x-2 text-gray-600">
                 <Phone className="w-4 h-4" />
                 <span>Phone: {applicant.phone_number}</span>
+              </div>
+              <div className="flex items-center space-x-2 text-gray-600">
+                <Briefcase className="w-4 h-4" />
+                <span>Job: {applicant.job}</span>
               </div>
             </div>
 

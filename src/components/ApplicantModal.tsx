@@ -28,6 +28,7 @@ export const ApplicantModal: React.FC<ApplicantModalProps> = ({
     age: '',
     passport_number: '',
     phone_number: '',
+    job: '',
     status: 'pending' as 'accepted' | 'pending' | 'rejected',
     profile_picture: ''
   });
@@ -41,6 +42,7 @@ export const ApplicantModal: React.FC<ApplicantModalProps> = ({
         age: applicant.age.toString(),
         passport_number: applicant.passport_number,
         phone_number: applicant.phone_number,
+        job: applicant.job || '',
         status: applicant.status,
         profile_picture: applicant.profile_picture || ''
       });
@@ -51,6 +53,7 @@ export const ApplicantModal: React.FC<ApplicantModalProps> = ({
         age: '',
         passport_number: '',
         phone_number: '',
+        job: '',
         status: 'pending',
         profile_picture: ''
       });
@@ -68,6 +71,7 @@ export const ApplicantModal: React.FC<ApplicantModalProps> = ({
         age: parseInt(formData.age),
         passport_number: formData.passport_number,
         phone_number: formData.phone_number,
+        job: formData.job,
         status: formData.status,
         profile_picture: formData.profile_picture || null
       };
@@ -166,6 +170,18 @@ export const ApplicantModal: React.FC<ApplicantModalProps> = ({
               value={formData.phone_number}
               onChange={(e) => setFormData(prev => ({ ...prev, phone_number: e.target.value }))}
               placeholder="Enter phone number"
+              required
+              disabled={isSubmitting}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="job">Job</Label>
+            <Input
+              id="job"
+              value={formData.job}
+              onChange={(e) => setFormData(prev => ({ ...prev, job: e.target.value }))}
+              placeholder="Enter job title"
               required
               disabled={isSubmitting}
             />
