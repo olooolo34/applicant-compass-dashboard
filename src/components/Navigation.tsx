@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { LogIn, Plus, Settings } from 'lucide-react';
@@ -36,9 +35,6 @@ export const Navigation: React.FC<NavigationProps> = ({
               </a>
               <a href="#applicants" className="text-purple-100 hover:text-white transition-colors px-3 py-2 rounded-md text-sm font-medium">
                 Applicants
-              </a>
-              <a href="#contact" className="text-purple-100 hover:text-white transition-colors px-3 py-2 rounded-md text-sm font-medium">
-                Contact
               </a>
             </div>
           </div>
