@@ -30,7 +30,7 @@ export const useApplicants = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setApplicants((data || []).map(item => ({
+      setApplicants((data || []).map((item: any) => ({
         ...item,
         job: item.job || '', // Ensure job field is always a string
         status: item.status as 'accepted' | 'pending' | 'rejected'
@@ -58,8 +58,8 @@ export const useApplicants = () => {
       if (error) throw error;
       const typedData = {
         ...data,
-        job: data.job || '', // Ensure job field is always a string
-        status: data.status as 'accepted' | 'pending' | 'rejected'
+        job: (data as any).job || '', // Ensure job field is always a string
+        status: (data as any).status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => [typedData, ...prev]);
       toast({
@@ -90,8 +90,8 @@ export const useApplicants = () => {
       if (error) throw error;
       const typedData = {
         ...data,
-        job: data.job || '', // Ensure job field is always a string
-        status: data.status as 'accepted' | 'pending' | 'rejected'
+        job: (data as any).job || '', // Ensure job field is always a string
+        status: (data as any).status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => prev.map(a => a.id === id ? typedData : a));
       toast({
