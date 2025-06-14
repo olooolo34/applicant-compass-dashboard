@@ -14,10 +14,20 @@ export const HeroBanner: React.FC = () => {
               Welcome
             </span>
           </h1>
+          
+          <div className="mb-8">
+            <img 
+              src="/lovable-uploads/966b39ff-32f6-4e89-82a2-10f5ef83abc6.png" 
+              alt="Manufacturing facility" 
+              className="mx-auto rounded-lg shadow-lg max-w-2xl w-full h-auto"
+            />
+          </div>
+          
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
-            Streamline your application process with our comprehensive management system. 
-            Track, manage, and review applications with ease.
+            If you get accepted, you'll be working with us in our state-of-the-art facilities! 
+            Congratulations in advance on taking this important step in your career journey.
           </p>
+          
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href="#applicants" 
