@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
@@ -34,6 +33,14 @@ const Index = () => {
         variant: "destructive",
       });
     }
+  };
+
+  const handleLogout = () => {
+    setIsAdmin(false);
+    toast({
+      title: "Logged Out",
+      description: "You have been logged out successfully.",
+    });
   };
 
   const handleAddApplicant = async (applicant: Omit<Applicant, 'id'>) => {
@@ -80,6 +87,7 @@ const Index = () => {
         isAdmin={isAdmin} 
         onLoginClick={() => setShowAdminModal(true)}
         onAddApplicant={() => setShowApplicantModal(true)}
+        onLogout={handleLogout}
       />
       <HeroBanner />
       <AboutSection />

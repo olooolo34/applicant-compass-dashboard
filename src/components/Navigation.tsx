@@ -1,17 +1,20 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { LogIn, Plus, Settings } from 'lucide-react';
+import { LogIn, Plus, Settings, LogOut } from 'lucide-react';
 
 interface NavigationProps {
   isAdmin: boolean;
   onLoginClick: () => void;
   onAddApplicant: () => void;
+  onLogout?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ 
   isAdmin, 
   onLoginClick, 
-  onAddApplicant 
+  onAddApplicant,
+  onLogout
 }) => {
   return (
     <nav className="bg-purple-600/95 backdrop-blur-sm border-b border-purple-500/20 sticky top-0 z-50">
@@ -54,6 +57,15 @@ export const Navigation: React.FC<NavigationProps> = ({
                   <Settings className="w-4 h-4 mr-1" />
                   Admin Mode
                 </div>
+                <Button
+                  onClick={onLogout}
+                  variant="outline"
+                  className="border-purple-300 text-purple-100 hover:bg-purple-500 hover:text-white hover:border-purple-400"
+                  size="sm"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Logout
+                </Button>
               </div>
             ) : (
               <Button

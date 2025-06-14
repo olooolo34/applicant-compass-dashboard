@@ -32,6 +32,7 @@ export const useApplicants = () => {
       if (error) throw error;
       setApplicants((data || []).map(item => ({
         ...item,
+        job: item.job || '', // Ensure job field is always a string
         status: item.status as 'accepted' | 'pending' | 'rejected'
       })));
     } catch (error) {
@@ -57,6 +58,7 @@ export const useApplicants = () => {
       if (error) throw error;
       const typedData = {
         ...data,
+        job: data.job || '', // Ensure job field is always a string
         status: data.status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => [typedData, ...prev]);
@@ -88,6 +90,7 @@ export const useApplicants = () => {
       if (error) throw error;
       const typedData = {
         ...data,
+        job: data.job || '', // Ensure job field is always a string
         status: data.status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => prev.map(a => a.id === id ? typedData : a));
