@@ -29,7 +29,10 @@ export const useApplicants = () => {
         .order('created_at', { ascending: false });
 
       if (error) throw error;
-      setApplicants(data || []);
+      setApplicants((data || []).map(item => ({
+        ...item,
+        status: item.status as 'accepted' | 'pending' | 'rejected'
+      })));
     } catch (error) {
       console.error('Error fetching applicants:', error);
       toast({
@@ -51,12 +54,16 @@ export const useApplicants = () => {
         .single();
 
       if (error) throw error;
-      setApplicants(prev => [data, ...prev]);
+      const typedData = {
+        ...data,
+        status: data.status as 'accepted' | 'pending' | 'rejected'
+      };
+      setApplicants(prev => [typedData, ...prev]);
       toast({
         title: "Success",
         description: `${applicant.full_name} has been added successfully.`,
       });
-      return data;
+      return typedData;
     } catch (error) {
       console.error('Error adding applicant:', error);
       toast({
@@ -78,12 +85,16 @@ export const useApplicants = () => {
         .single();
 
       if (error) throw error;
-      setApplicants(prev => prev.map(a => a.id === id ? data : a));
+      const typedData = {
+        ...data,
+        status: data.status as 'accepted' | 'pending' | 'rejected'
+      };
+      setApplicants(prev => prev.map(a => a.id === id ? typedData : a));
       toast({
         title: "Success",
         description: "Applicant updated successfully.",
       });
-      return data;
+      return typedData;
     } catch (error) {
       console.error('Error updating applicant:', error);
       toast({

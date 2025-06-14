@@ -19,9 +19,11 @@ export const Navigation: React.FC<NavigationProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
-            <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-              ApplicantHub
-            </div>
+            <img 
+              src="/lovable-uploads/277eb854-9fa4-4579-aee6-822f80b89e61.png" 
+              alt="ApplicantHub Logo" 
+              className="h-8 w-auto"
+            />
           </div>
 
           <div className="hidden md:block">
