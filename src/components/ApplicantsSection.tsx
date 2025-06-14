@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Applicant } from '../pages/Index';
+import { Applicant } from '@/hooks/useApplicants';
 import { ApplicantCard } from './ApplicantCard';
 
 interface ApplicantsSectionProps {

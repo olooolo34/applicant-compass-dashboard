@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Applicant } from '../pages/Index';
+import { Applicant } from '@/hooks/useApplicants';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar } from 'lucide-react';
@@ -33,14 +33,20 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
       <div className="p-4">
         <div className="flex items-center space-x-3">
-          <img
-            src={applicant.profilePicture}
-            alt={applicant.fullName}
-            className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
-          />
+          {applicant.profile_picture ? (
+            <img
+              src={applicant.profile_picture}
+              alt={applicant.full_name}
+              className="w-12 h-12 rounded-full object-cover border-2 border-gray-200"
+            />
+          ) : (
+            <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
+              <User className="w-6 h-6 text-gray-400" />
+            </div>
+          )}
           <div className="flex-1 min-w-0">
             <h3 className="text-lg font-semibold text-gray-900 truncate">
-              {applicant.fullName}
+              {applicant.full_name}
             </h3>
             <Badge className={`${getStatusColor(applicant.status)} text-xs`}>
               {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
@@ -69,11 +75,11 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
               </div>
               <div className="flex items-center space-x-2 text-gray-600">
                 <FileText className="w-4 h-4" />
-                <span>Passport: {applicant.passportNumber}</span>
+                <span>Passport: {applicant.passport_number}</span>
               </div>
               <div className="flex items-center space-x-2 text-gray-600">
                 <Phone className="w-4 h-4" />
-                <span>Phone: {applicant.phoneNumber}</span>
+                <span>Phone: {applicant.phone_number}</span>
               </div>
             </div>
 
