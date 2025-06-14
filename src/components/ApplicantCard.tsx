@@ -3,12 +3,13 @@ import React, { useState } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase } from 'lucide-react';
+import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase, Trash2 } from 'lucide-react';
 
 interface ApplicantCardProps {
   applicant: Applicant;
   isAdmin: boolean;
   onEdit: () => void;
+  onDelete: () => void;
   onStatusChange: (status: 'accepted' | 'pending' | 'rejected') => void;
 }
 
@@ -16,6 +17,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   applicant,
   isAdmin,
   onEdit,
+  onDelete,
   onStatusChange
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -98,6 +100,15 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   >
                     <Edit className="w-3 h-3 mr-1" />
                     Edit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={onDelete}
+                    className="text-red-600 border-red-600 hover:bg-red-50"
+                  >
+                    <Trash2 className="w-3 h-3 mr-1" />
+                    Delete
                   </Button>
                   {applicant.status !== 'accepted' && (
                     <Button

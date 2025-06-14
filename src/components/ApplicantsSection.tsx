@@ -7,6 +7,7 @@ interface ApplicantsSectionProps {
   applicants: Applicant[];
   isAdmin: boolean;
   onEditApplicant: (applicant: Applicant) => void;
+  onDeleteApplicant: (id: string) => void;
   onStatusChange: (id: string, status: 'accepted' | 'pending' | 'rejected') => void;
 }
 
@@ -14,6 +15,7 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
   applicants,
   isAdmin,
   onEditApplicant,
+  onDeleteApplicant,
   onStatusChange
 }) => {
   const acceptedApplicants = applicants.filter(a => a.status === 'accepted');
@@ -46,6 +48,7 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
               applicant={applicant}
               isAdmin={isAdmin}
               onEdit={() => onEditApplicant(applicant)}
+              onDelete={() => onDeleteApplicant(applicant.id)}
               onStatusChange={(status) => onStatusChange(applicant.id, status)}
             />
           ))

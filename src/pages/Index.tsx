@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
@@ -16,7 +17,7 @@ const Index = () => {
   const [editingApplicant, setEditingApplicant] = useState<Applicant | null>(null);
   const { toast } = useToast();
   
-  const { applicants, loading, addApplicant, updateApplicant, updateStatus } = useApplicants();
+  const { applicants, loading, addApplicant, updateApplicant, deleteApplicant, updateStatus } = useApplicants();
 
   const handleLogin = (password: string) => {
     if (password === 'vip777') {
@@ -62,6 +63,16 @@ const Index = () => {
     }
   };
 
+  const handleDeleteApplicant = async (id: string) => {
+    if (window.confirm('Are you sure you want to delete this applicant? This action cannot be undone.')) {
+      try {
+        await deleteApplicant(id);
+      } catch (error) {
+        // Error is handled in the hook
+      }
+    }
+  };
+
   const handleStatusChange = async (id: string, newStatus: 'accepted' | 'pending' | 'rejected') => {
     try {
       await updateStatus(id, newStatus);
@@ -98,6 +109,7 @@ const Index = () => {
           setEditingApplicant(applicant);
           setShowApplicantModal(true);
         }}
+        onDeleteApplicant={handleDeleteApplicant}
         onStatusChange={handleStatusChange}
       />
       <BrandsSection />

@@ -32,7 +32,7 @@ export const useApplicants = () => {
       if (error) throw error;
       setApplicants((data || []).map((item: any) => ({
         ...item,
-        job: item.job || '', // Ensure job field is always a string
+        job: item.job || '',
         status: item.status as 'accepted' | 'pending' | 'rejected'
       })));
     } catch (error) {
@@ -51,15 +51,18 @@ export const useApplicants = () => {
     try {
       const { data, error } = await supabase
         .from('applicants')
-        .insert([applicant])
+        .insert([{
+          ...applicant,
+          job: applicant.job || ''
+        }])
         .select()
         .single();
 
       if (error) throw error;
-      const typedData = {
+      const typedData: Applicant = {
         ...data,
-        job: (data as any).job || '', // Ensure job field is always a string
-        status: (data as any).status as 'accepted' | 'pending' | 'rejected'
+        job: data.job || '',
+        status: data.status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => [typedData, ...prev]);
       toast({
@@ -82,16 +85,19 @@ export const useApplicants = () => {
     try {
       const { data, error } = await supabase
         .from('applicants')
-        .update(updates)
+        .update({
+          ...updates,
+          job: updates.job || ''
+        })
         .eq('id', id)
         .select()
         .single();
 
       if (error) throw error;
-      const typedData = {
+      const typedData: Applicant = {
         ...data,
-        job: (data as any).job || '', // Ensure job field is always a string
-        status: (data as any).status as 'accepted' | 'pending' | 'rejected'
+        job: data.job || '',
+        status: data.status as 'accepted' | 'pending' | 'rejected'
       };
       setApplicants(prev => prev.map(a => a.id === id ? typedData : a));
       toast({
@@ -104,6 +110,30 @@ export const useApplicants = () => {
       toast({
         title: "Error",
         description: "Failed to update applicant",
+        variant: "destructive",
+      });
+      throw error;
+    }
+  };
+
+  const deleteApplicant = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('applicants')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      setApplicants(prev => prev.filter(a => a.id !== id));
+      toast({
+        title: "Success",
+        description: "Applicant deleted successfully.",
+      });
+    } catch (error) {
+      console.error('Error deleting applicant:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete applicant",
         variant: "destructive",
       });
       throw error;
@@ -123,6 +153,7 @@ export const useApplicants = () => {
     loading,
     addApplicant,
     updateApplicant,
+    deleteApplicant,
     updateStatus,
     refetch: fetchApplicants
   };
