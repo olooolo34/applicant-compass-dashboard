@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
@@ -19,7 +20,7 @@ const Index = () => {
   const { applicants, loading, addApplicant, updateApplicant, updateStatus } = useApplicants();
 
   const handleLogin = (password: string) => {
-    if (password === 'admin123') {
+    if (password === 'vip777') {
       setIsAdmin(true);
       setShowAdminModal(false);
       toast({

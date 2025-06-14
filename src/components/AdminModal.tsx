@@ -42,9 +42,6 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, onLogin
               className="w-full"
               autoFocus
             />
-            <p className="text-xs text-gray-500">
-              Demo password: admin123
-            </p>
           </div>
           <div className="flex gap-2">
             <Button type="submit" className="flex-1">
