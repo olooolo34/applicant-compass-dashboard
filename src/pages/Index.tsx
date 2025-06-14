@@ -1,9 +1,9 @@
-
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
 import { AboutSection } from '../components/AboutSection';
 import { ApplicantsSection } from '../components/ApplicantsSection';
+import { BrandsSection } from '../components/BrandsSection';
 import { AdminModal } from '../components/AdminModal';
 import { ApplicantModal } from '../components/ApplicantModal';
 import { useApplicants, Applicant } from '../hooks/useApplicants';
@@ -91,6 +91,7 @@ const Index = () => {
         }}
         onStatusChange={handleStatusChange}
       />
+      <BrandsSection />
 
       <AdminModal
         isOpen={showAdminModal}
