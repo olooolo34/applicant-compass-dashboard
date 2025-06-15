@@ -4,6 +4,7 @@ import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
 import { AboutSection } from '../components/AboutSection';
 import { ApplicantsSection } from '../components/ApplicantsSection';
+import { WhyChooseUsSection } from '../components/WhyChooseUsSection';
 import { BrandsSection } from '../components/BrandsSection';
 import { AdminModal } from '../components/AdminModal';
 import { ApplicantModal } from '../components/ApplicantModal';
@@ -112,6 +113,7 @@ const Index = () => {
         onDeleteApplicant={handleDeleteApplicant}
         onStatusChange={handleStatusChange}
       />
+      <WhyChooseUsSection />
       <BrandsSection />
 
       <AdminModal
