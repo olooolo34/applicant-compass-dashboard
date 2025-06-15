@@ -32,11 +32,10 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   };
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
       <div className="p-4">
         <div 
-          className="flex items-center space-x-3 cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
+          className="flex items-center space-x-3"
         >
           {applicant.profile_picture ? (
             <img
@@ -50,7 +49,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h3 className="text-md sm:text-lg font-semibold text-gray-900">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap overflow-hidden">
               {applicant.full_name}
             </h3>
             <Badge className={`${getStatusColor(applicant.status)} text-xs`}>
@@ -95,7 +94,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={onEdit}
+                    onClick={(e) => { e.stopPropagation(); onEdit(); }}
                     className="text-blue-600 border-blue-600 hover:bg-blue-50"
                   >
                     <Edit className="w-3 h-3 mr-1" />
@@ -104,7 +103,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={onDelete}
+                    onClick={(e) => { e.stopPropagation(); onDelete(); }}
                     className="text-red-600 border-red-600 hover:bg-red-50"
                   >
                     <Trash2 className="w-3 h-3 mr-1" />
@@ -113,7 +112,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   {applicant.status !== 'accepted' && (
                     <Button
                       size="sm"
-                      onClick={() => onStatusChange('accepted')}
+                      onClick={(e) => { e.stopPropagation(); onStatusChange('accepted'); }}
                       className="bg-green-600 hover:bg-green-700 text-white text-xs"
                     >
                       Accept
@@ -122,7 +121,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   {applicant.status !== 'pending' && (
                     <Button
                       size="sm"
-                      onClick={() => onStatusChange('pending')}
+                      onClick={(e) => { e.stopPropagation(); onStatusChange('pending'); }}
                       className="bg-orange-600 hover:bg-orange-700 text-white text-xs"
                     >
                       Pending
@@ -131,7 +130,7 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                   {applicant.status !== 'rejected' && (
                     <Button
                       size="sm"
-                      onClick={() => onStatusChange('rejected')}
+                      onClick={(e) => { e.stopPropagation(); onStatusChange('rejected'); }}
                       className="bg-red-600 hover:bg-red-700 text-white text-xs"
                     >
                       Reject
