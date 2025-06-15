@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { ArrowDown } from 'lucide-react';
 
 export const HeroBanner: React.FC = () => {
   return (
@@ -28,21 +27,6 @@ export const HeroBanner: React.FC = () => {
             Congratulations in advance on taking this important step in your career journey.
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a 
-              href="#applicants" 
-              className="inline-flex items-center px-8 py-4 bg-purple-600 text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-200 hover:scale-105"
-            >
-              View Applicants
-              <ArrowDown className="ml-2 w-5 h-5" />
-            </a>
-            <a 
-              href="#about" 
-              className="inline-flex items-center px-8 py-4 border-2 border-purple-600 text-purple-600 font-semibold rounded-lg hover:bg-purple-600 hover:text-white transition-all duration-200"
-            >
-              Learn More
-            </a>
-          </div>
         </div>
       </div>
 

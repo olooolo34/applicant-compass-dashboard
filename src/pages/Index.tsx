@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
@@ -10,6 +9,8 @@ import { AdminModal } from '../components/AdminModal';
 import { ApplicantModal } from '../components/ApplicantModal';
 import { useApplicants, Applicant } from '../hooks/useApplicants';
 import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { Plus } from 'lucide-react';
 
 const Index = () => {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -98,11 +99,9 @@ const Index = () => {
       <Navigation 
         isAdmin={isAdmin} 
         onLoginClick={() => setShowAdminModal(true)}
-        onAddApplicant={() => setShowApplicantModal(true)}
         onLogout={handleLogout}
       />
       <HeroBanner />
-      <AboutSection />
       <ApplicantsSection 
         applicants={applicants}
         isAdmin={isAdmin}
@@ -115,6 +114,16 @@ const Index = () => {
       />
       <WhyChooseUsSection />
       <BrandsSection />
+
+      {isAdmin && (
+        <Button
+          onClick={() => setShowApplicantModal(true)}
+          className="fixed bottom-8 right-8 z-50 h-16 w-16 rounded-full bg-purple-600 text-white shadow-lg hover:bg-purple-700 transition-transform hover:scale-110 flex items-center justify-center"
+          aria-label="Add new applicant"
+        >
+          <Plus className="h-8 w-8" />
+        </Button>
+      )}
 
       <AdminModal
         isOpen={showAdminModal}

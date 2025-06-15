@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LogIn, Plus, Settings, LogOut, Menu, X } from 'lucide-react';
@@ -11,14 +10,12 @@ import {
 interface NavigationProps {
   isAdmin: boolean;
   onLoginClick: () => void;
-  onAddApplicant: () => void;
   onLogout?: () => void;
 }
 
 export const Navigation: React.FC<NavigationProps> = ({ 
   isAdmin, 
   onLoginClick, 
-  onAddApplicant,
   onLogout
 }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -61,15 +58,7 @@ export const Navigation: React.FC<NavigationProps> = ({
           {/* Desktop Admin Controls */}
           <div className="hidden md:flex items-center space-x-4">
             {isAdmin ? (
-              <div className="flex items-center space-x-2">
-                <Button
-                  onClick={onAddApplicant}
-                  className="bg-emerald-600 hover:bg-emerald-700 text-white"
-                  size="sm"
-                >
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Applicant
-                </Button>
+              <div className="flex items-center space-x-4">
                 <div className="flex items-center text-sm text-emerald-200 font-medium">
                   <Settings className="w-4 h-4 mr-1" />
                   Admin Mode
@@ -144,17 +133,6 @@ export const Navigation: React.FC<NavigationProps> = ({
                           <Settings className="w-4 h-4 mr-2" />
                           Admin Mode
                         </div>
-                        <Button
-                          onClick={() => {
-                            onAddApplicant();
-                            setIsMobileMenuOpen(false);
-                          }}
-                          className="w-full bg-emerald-600 hover:bg-emerald-700 text-white justify-start"
-                          size="sm"
-                        >
-                          <Plus className="w-4 h-4 mr-2" />
-                          Add Applicant
-                        </Button>
                         <Button
                           onClick={() => {
                             onLogout?.();

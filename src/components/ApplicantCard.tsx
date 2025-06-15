@@ -34,7 +34,10 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
       <div className="p-4">
-        <div className="flex items-center space-x-3">
+        <div 
+          className="flex items-center space-x-3 cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
           {applicant.profile_picture ? (
             <img
               src={applicant.profile_picture}
@@ -47,21 +50,18 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
             </div>
           )}
           <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-gray-900 truncate">
+            <h3 className="text-md sm:text-lg font-semibold text-gray-900">
               {applicant.full_name}
             </h3>
             <Badge className={`${getStatusColor(applicant.status)} text-xs`}>
               {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
             </Badge>
           </div>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="text-gray-500 hover:text-gray-700"
+          <div
+            className="text-gray-500"
           >
             {isExpanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </Button>
+          </div>
         </div>
 
         {isExpanded && (
