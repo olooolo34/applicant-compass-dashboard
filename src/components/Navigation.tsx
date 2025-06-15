@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { LogIn, Plus, Settings, LogOut, Menu, X } from 'lucide-react';
@@ -80,7 +81,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                 className="border-purple-300 text-purple-100 hover:bg-purple-500 hover:text-white hover:border-purple-400"
               >
                 <LogIn className="w-4 h-4 mr-2" />
-                Admin Login
+                Login
               </Button>
             )}
           </div>
@@ -157,7 +158,7 @@ export const Navigation: React.FC<NavigationProps> = ({
                         size="sm"
                       >
                         <LogIn className="w-4 h-4 mr-2" />
-                        Admin Login
+                        Login
                       </Button>
                     )}
                   </div>
