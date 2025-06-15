@@ -27,7 +27,7 @@ export const AdminModal: React.FC<AdminModalProps> = ({ isOpen, onClose, onLogin
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Lock className="w-5 h-5" />
-            Administrator Login
+            Login
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">

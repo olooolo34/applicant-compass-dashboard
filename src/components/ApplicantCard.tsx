@@ -41,11 +41,11 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
             <img
               src={applicant.profile_picture}
               alt={applicant.full_name}
-              className="w-16 h-16 rounded-full object-cover border-2 border-gray-200"
+              className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
             />
           ) : (
-            <div className="w-16 h-16 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
-              <User className="w-8 h-8 text-gray-400" />
+            <div className="w-20 h-20 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
+              <User className="w-10 h-10 text-gray-400" />
             </div>
           )}
           <div className="flex-1 min-w-0">

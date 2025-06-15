@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
@@ -102,6 +103,7 @@ const Index = () => {
         onLogout={handleLogout}
       />
       <HeroBanner />
+      <AboutSection />
       <ApplicantsSection 
         applicants={applicants}
         isAdmin={isAdmin}
