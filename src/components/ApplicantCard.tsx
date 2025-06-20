@@ -21,6 +21,8 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   onStatusChange
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -37,17 +39,34 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
         <div 
           className="flex items-center space-x-3"
         >
-          {applicant.profile_picture ? (
-            <img
-              src={applicant.profile_picture}
-              alt={applicant.full_name}
-              className="w-20 h-20 rounded-full object-cover border-2 border-gray-200"
-            />
-          ) : (
-            <div className="w-20 h-20 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
-              <User className="w-10 h-10 text-gray-400" />
-            </div>
-          )}
+          <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex-shrink-0">
+            {applicant.profile_picture && !imageError ? (
+              <>
+                {!imageLoaded && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="w-6 h-6 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin"></div>
+                  </div>
+                )}
+                <img
+                  src={applicant.profile_picture}
+                  alt={applicant.full_name}
+                  className={`w-full h-full object-cover transition-opacity duration-200 ${imageLoaded ? 'opacity-100' : 'opacity-0'}`}
+                  loading="lazy"
+                  onLoad={() => setImageLoaded(true)}
+                  onError={() => setImageError(true)}
+                  style={{ 
+                    maxWidth: '80px', 
+                    maxHeight: '80px',
+                    objectFit: 'cover'
+                  }}
+                />
+              </>
+            ) : (
+              <div className="w-full h-full flex items-center justify-center">
+                <User className="w-10 h-10 text-gray-400" />
+              </div>
+            )}
+          </div>
           <div className="flex-1 min-w-0">
             <h3 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap overflow-hidden">
               {applicant.full_name}
