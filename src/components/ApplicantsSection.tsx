@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { ApplicantCard } from './ApplicantCard';
@@ -18,9 +17,9 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
   onDeleteApplicant,
   onStatusChange
 }) => {
-  const acceptedApplicants = applicants.filter(a => a.status === 'accepted');
-  const pendingApplicants = applicants.filter(a => a.status === 'pending');
-  const rejectedApplicants = applicants.filter(a => a.status === 'rejected');
+  const acceptedApplicants = applicants.filter(a => a.status === 'accepted').sort((a, b) => a.full_name.localeCompare(b.full_name));
+  const pendingApplicants = applicants.filter(a => a.status === 'pending').sort((a, b) => a.full_name.localeCompare(b.full_name));
+  const rejectedApplicants = applicants.filter(a => a.status === 'rejected').sort((a, b) => a.full_name.localeCompare(b.full_name));
 
   const StatusColumn = ({ 
     title, 
