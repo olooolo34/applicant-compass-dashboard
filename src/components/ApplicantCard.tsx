@@ -33,6 +33,22 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
     }
   };
 
+  // Split name for display - limit to 2 lines max
+  const formatName = (name: string) => {
+    const words = name.split(' ');
+    if (words.length <= 2) {
+      return { firstLine: name, secondLine: null };
+    }
+    
+    // For names with more than 2 words, put first 2 words on first line
+    const firstLine = words.slice(0, 2).join(' ');
+    const secondLine = words.slice(2).join(' ');
+    
+    return { firstLine, secondLine };
+  };
+
+  const { firstLine, secondLine } = formatName(applicant.full_name);
+
   return (
     <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
       <div className="p-4">
@@ -69,13 +85,9 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-sm sm:text-base font-semibold text-gray-900">
-              {applicant.full_name.length > 20 ? (
-                <div>
-                  <div>{applicant.full_name.substring(0, 20)}</div>
-                  <div className="text-xs">{applicant.full_name.substring(20)}</div>
-                </div>
-              ) : (
-                applicant.full_name
+              <div>{firstLine}</div>
+              {secondLine && (
+                <div className="text-sm sm:text-base font-semibold text-gray-900">{secondLine}</div>
               )}
             </div>
             <Badge className={`${getStatusColor(applicant.status)} text-xs mt-1`}>
