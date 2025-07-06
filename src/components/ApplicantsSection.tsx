@@ -1,6 +1,9 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { ApplicantCard } from './ApplicantCard';
+import { Input } from '@/components/ui/input';
+import { Edit2 } from 'lucide-react';
 
 interface ApplicantsSectionProps {
   applicants: Applicant[];
@@ -17,6 +20,11 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
   onDeleteApplicant,
   onStatusChange
 }) => {
+  const [pendingCount, setPendingCount] = useState('');
+  const [rejectedCount, setRejectedCount] = useState('');
+  const [isEditingPending, setIsEditingPending] = useState(false);
+  const [isEditingRejected, setIsEditingRejected] = useState(false);
+
   const acceptedApplicants = applicants.filter(a => a.status === 'accepted').sort((a, b) => a.full_name.localeCompare(b.full_name));
   const pendingApplicants = applicants.filter(a => a.status === 'pending').sort((a, b) => a.full_name.localeCompare(b.full_name));
   const rejectedApplicants = applicants.filter(a => a.status === 'rejected').sort((a, b) => a.full_name.localeCompare(b.full_name));
@@ -26,18 +34,60 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
     applicants, 
     bgColor, 
     textColor, 
-    count 
+    count,
+    customCount,
+    isEditing,
+    onEditClick,
+    onCountChange,
+    onCountSave
   }: { 
     title: string; 
     applicants: Applicant[]; 
     bgColor: string; 
     textColor: string; 
     count: number;
+    customCount?: string;
+    isEditing?: boolean;
+    onEditClick?: () => void;
+    onCountChange?: (value: string) => void;
+    onCountSave?: () => void;
   }) => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       <div className={`${bgColor} ${textColor} p-4 text-center`}>
         <h3 className="text-xl font-bold">{title}</h3>
-        <div className="text-sm opacity-90 mt-1">{count} applicant{count !== 1 ? 's' : ''}</div>
+        <div className="text-sm opacity-90 mt-1 flex items-center justify-center gap-2">
+          {title === 'Accepted' ? (
+            `${count} applicant${count !== 1 ? 's' : ''}`
+          ) : isAdmin && isEditing ? (
+            <div className="flex items-center gap-2">
+              <Input
+                type="number"
+                value={customCount}
+                onChange={(e) => onCountChange?.(e.target.value)}
+                onBlur={onCountSave}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    onCountSave?.();
+                  }
+                }}
+                className="w-16 h-6 text-xs text-center bg-white/20 border-white/30 text-white placeholder-white/70"
+                placeholder="0"
+                autoFocus
+              />
+              <span>applicant{customCount !== '1' ? 's' : ''}</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-1">
+              <span>{customCount || count} applicant{(customCount ? parseInt(customCount) : count) !== 1 ? 's' : ''}</span>
+              {isAdmin && (
+                <Edit2 
+                  className="w-3 h-3 cursor-pointer opacity-70 hover:opacity-100" 
+                  onClick={onEditClick}
+                />
+              )}
+            </div>
+          )}
+        </div>
       </div>
       <div className="p-4 space-y-4 min-h-[400px]">
         {applicants.length > 0 ? (
@@ -87,6 +137,11 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
             bgColor="bg-orange-500"
             textColor="text-white"
             count={pendingApplicants.length}
+            customCount={pendingCount}
+            isEditing={isEditingPending}
+            onEditClick={() => setIsEditingPending(true)}
+            onCountChange={setPendingCount}
+            onCountSave={() => setIsEditingPending(false)}
           />
           <StatusColumn
             title="Rejected"
@@ -94,6 +149,11 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
             bgColor="bg-red-500"
             textColor="text-white"
             count={rejectedApplicants.length}
+            customCount={rejectedCount}
+            isEditing={isEditingRejected}
+            onEditClick={() => setIsEditingRejected(true)}
+            onCountChange={setRejectedCount}
+            onCountSave={() => setIsEditingRejected(false)}
           />
         </div>
       </div>

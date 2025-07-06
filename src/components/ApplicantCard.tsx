@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase, Trash2 } from 'lucide-react';
+import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase, Trash2, MapPin } from 'lucide-react';
 
 interface ApplicantCardProps {
   applicant: Applicant;
@@ -68,10 +68,17 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
             )}
           </div>
           <div className="flex-1 min-w-0">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-900 whitespace-nowrap overflow-hidden">
-              {applicant.full_name}
-            </h3>
-            <Badge className={`${getStatusColor(applicant.status)} text-xs`}>
+            <div className="text-sm sm:text-base font-semibold text-gray-900">
+              {applicant.full_name.length > 20 ? (
+                <div>
+                  <div>{applicant.full_name.substring(0, 20)}</div>
+                  <div className="text-xs">{applicant.full_name.substring(20)}</div>
+                </div>
+              ) : (
+                applicant.full_name
+              )}
+            </div>
+            <Badge className={`${getStatusColor(applicant.status)} text-xs mt-1`}>
               {applicant.status.charAt(0).toUpperCase() + applicant.status.slice(1)}
             </Badge>
           </div>
@@ -105,6 +112,12 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
                 <Briefcase className="w-4 h-4" />
                 <span>Job: {applicant.job}</span>
               </div>
+              {applicant.status === 'accepted' && (
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  <span>Location: Canada</span>
+                </div>
+              )}
             </div>
 
             {isAdmin && (

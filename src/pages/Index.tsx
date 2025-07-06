@@ -1,5 +1,4 @@
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Navigation } from '../components/Navigation';
 import { HeroBanner } from '../components/HeroBanner';
 import { AboutSection } from '../components/AboutSection';
@@ -22,13 +21,54 @@ const Index = () => {
   
   const { applicants, loading, addApplicant, updateApplicant, deleteApplicant, updateStatus } = useApplicants();
 
+  // Check for persistent admin login on component mount
+  useEffect(() => {
+    const checkPersistentLogin = () => {
+      const deviceInfo = getDeviceInfo();
+      const storedAdminInfo = localStorage.getItem('admin_session');
+      
+      if (storedAdminInfo) {
+        const { deviceHash, timestamp } = JSON.parse(storedAdminInfo);
+        const currentDeviceHash = btoa(deviceInfo);
+        const daysSinceLogin = (Date.now() - timestamp) / (1000 * 60 * 60 * 24);
+        
+        // Auto-login if same device and within 30 days
+        if (deviceHash === currentDeviceHash && daysSinceLogin < 30) {
+          setIsAdmin(true);
+        } else {
+          localStorage.removeItem('admin_session');
+        }
+      }
+    };
+
+    checkPersistentLogin();
+  }, []);
+
+  const getDeviceInfo = () => {
+    const userAgent = navigator.userAgent;
+    const screenResolution = `${screen.width}x${screen.height}`;
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const language = navigator.language;
+    
+    return `${userAgent}-${screenResolution}-${timezone}-${language}`;
+  };
+
   const handleLogin = (password: string) => {
     if (password === 'vip777') {
+      const deviceInfo = getDeviceInfo();
+      const deviceHash = btoa(deviceInfo);
+      
+      // Store admin session with device info
+      localStorage.setItem('admin_session', JSON.stringify({
+        deviceHash,
+        timestamp: Date.now()
+      }));
+      
       setIsAdmin(true);
       setShowAdminModal(false);
       toast({
         title: "Login Successful",
-        description: "Welcome, Administrator!",
+        description: "Welcome, Administrator! You'll stay logged in on this device.",
       });
     } else {
       toast({
@@ -40,6 +80,7 @@ const Index = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('admin_session');
     setIsAdmin(false);
     toast({
       title: "Logged Out",
