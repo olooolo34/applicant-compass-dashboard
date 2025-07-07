@@ -1,9 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { ApplicantCard } from './ApplicantCard';
 import { Input } from '@/components/ui/input';
-import { Edit2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Edit2, Check, X } from 'lucide-react';
 
 interface ApplicantsSectionProps {
   applicants: Applicant[];
@@ -25,9 +26,44 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
   const [isEditingPending, setIsEditingPending] = useState(false);
   const [isEditingRejected, setIsEditingRejected] = useState(false);
 
+  // Load saved custom counts from localStorage on component mount
+  useEffect(() => {
+    const savedPendingCount = localStorage.getItem('admin_pending_count');
+    const savedRejectedCount = localStorage.getItem('admin_rejected_count');
+    
+    if (savedPendingCount) {
+      setPendingCount(savedPendingCount);
+    }
+    if (savedRejectedCount) {
+      setRejectedCount(savedRejectedCount);
+    }
+  }, []);
+
   const acceptedApplicants = applicants.filter(a => a.status === 'accepted').sort((a, b) => a.full_name.localeCompare(b.full_name));
   const pendingApplicants = applicants.filter(a => a.status === 'pending').sort((a, b) => a.full_name.localeCompare(b.full_name));
   const rejectedApplicants = applicants.filter(a => a.status === 'rejected').sort((a, b) => a.full_name.localeCompare(b.full_name));
+
+  const handleSavePendingCount = () => {
+    localStorage.setItem('admin_pending_count', pendingCount);
+    setIsEditingPending(false);
+  };
+
+  const handleSaveRejectedCount = () => {
+    localStorage.setItem('admin_rejected_count', rejectedCount);
+    setIsEditingRejected(false);
+  };
+
+  const handleCancelPendingEdit = () => {
+    const savedCount = localStorage.getItem('admin_pending_count') || '';
+    setPendingCount(savedCount);
+    setIsEditingPending(false);
+  };
+
+  const handleCancelRejectedEdit = () => {
+    const savedCount = localStorage.getItem('admin_rejected_count') || '';
+    setRejectedCount(savedCount);
+    setIsEditingRejected(false);
+  };
 
   const StatusColumn = ({ 
     title, 
@@ -39,7 +75,8 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
     isEditing,
     onEditClick,
     onCountChange,
-    onCountSave
+    onSave,
+    onCancel
   }: { 
     title: string; 
     applicants: Applicant[]; 
@@ -50,7 +87,8 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
     isEditing?: boolean;
     onEditClick?: () => void;
     onCountChange?: (value: string) => void;
-    onCountSave?: () => void;
+    onSave?: () => void;
+    onCancel?: () => void;
   }) => (
     <div className="bg-white rounded-xl shadow-lg overflow-hidden">
       <div className={`${bgColor} ${textColor} p-4 text-center`}>
@@ -64,17 +102,27 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
                 type="number"
                 value={customCount}
                 onChange={(e) => onCountChange?.(e.target.value)}
-                onBlur={onCountSave}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter') {
-                    onCountSave?.();
-                  }
-                }}
                 className="w-16 h-6 text-xs text-center bg-white/20 border-white/30 text-white placeholder-white/70"
                 placeholder="0"
                 autoFocus
               />
               <span>applicant{customCount !== '1' ? 's' : ''}</span>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={onSave}
+                className="h-6 w-6 p-0 text-white hover:bg-white/20"
+              >
+                <Check className="w-3 h-3" />
+              </Button>
+              <Button
+                size="sm"
+                variant="ghost"
+                onClick={onCancel}
+                className="h-6 w-6 p-0 text-white hover:bg-white/20"
+              >
+                <X className="w-3 h-3" />
+              </Button>
             </div>
           ) : (
             <div className="flex items-center gap-1">
@@ -141,7 +189,8 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
             isEditing={isEditingPending}
             onEditClick={() => setIsEditingPending(true)}
             onCountChange={setPendingCount}
-            onCountSave={() => setIsEditingPending(false)}
+            onSave={handleSavePendingCount}
+            onCancel={handleCancelPendingEdit}
           />
           <StatusColumn
             title="Rejected"
@@ -153,7 +202,8 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
             isEditing={isEditingRejected}
             onEditClick={() => setIsEditingRejected(true)}
             onCountChange={setRejectedCount}
-            onCountSave={() => setIsEditingRejected(false)}
+            onSave={handleSaveRejectedCount}
+            onCancel={handleCancelRejectedEdit}
           />
         </div>
       </div>
