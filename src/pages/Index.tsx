@@ -54,7 +54,7 @@ const Index = () => {
   };
 
   const handleLogin = (password: string) => {
-    if (password === 'vip777') {
+    if (password === 'ipv994') {
       const deviceInfo = getDeviceInfo();
       const deviceHash = btoa(deviceInfo);
       
