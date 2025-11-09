@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Applicant } from '@/hooks/useApplicants';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Edit, ChevronDown, ChevronUp, Phone, FileText, User, Calendar, Briefcase, Trash2, MapPin } from 'lucide-react';
 
 interface ApplicantCardProps {
@@ -11,6 +12,9 @@ interface ApplicantCardProps {
   onEdit: () => void;
   onDelete: () => void;
   onStatusChange: (status: 'accepted' | 'pending' | 'rejected') => void;
+  isSelected?: boolean;
+  onToggleSelect?: () => void;
+  showCheckbox?: boolean;
 }
 
 export const ApplicantCard: React.FC<ApplicantCardProps> = ({
@@ -18,7 +22,10 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   isAdmin,
   onEdit,
   onDelete,
-  onStatusChange
+  onStatusChange,
+  isSelected = false,
+  onToggleSelect,
+  showCheckbox = false
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -50,11 +57,20 @@ export const ApplicantCard: React.FC<ApplicantCardProps> = ({
   const { firstLine, secondLine } = formatName(applicant.full_name);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+    <div className={`bg-white border-2 rounded-lg shadow-sm hover:shadow-md transition-all duration-200 cursor-pointer ${isSelected ? 'border-purple-500 bg-purple-50/30' : 'border-gray-200'}`} onClick={() => setIsExpanded(!isExpanded)}>
       <div className="p-4">
         <div 
           className="flex items-center space-x-3"
         >
+          {showCheckbox && (
+            <div onClick={(e) => e.stopPropagation()}>
+              <Checkbox 
+                checked={isSelected}
+                onCheckedChange={onToggleSelect}
+                className="h-5 w-5"
+              />
+            </div>
+          )}
           <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200 bg-gray-100 flex-shrink-0">
             {applicant.profile_picture && !imageError ? (
               <>

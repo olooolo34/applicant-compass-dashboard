@@ -117,6 +117,22 @@ const Index = () => {
     }
   };
 
+  const handleBulkDelete = async (ids: string[]) => {
+    try {
+      await Promise.all(ids.map(id => deleteApplicant(id)));
+      toast({
+        title: "Success",
+        description: `${ids.length} applicant(s) deleted successfully.`,
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete some applicants.",
+        variant: "destructive",
+      });
+    }
+  };
+
   const handleStatusChange = async (id: string, newStatus: 'accepted' | 'pending' | 'rejected') => {
     try {
       await updateStatus(id, newStatus);
@@ -154,6 +170,7 @@ const Index = () => {
         }}
         onDeleteApplicant={handleDeleteApplicant}
         onStatusChange={handleStatusChange}
+        onBulkDelete={handleBulkDelete}
       />
       <WhyChooseUsSection />
       <BrandsSection />

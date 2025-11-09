@@ -4,7 +4,7 @@ import { Applicant } from '@/hooks/useApplicants';
 import { ApplicantCard } from './ApplicantCard';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Edit2, Check, X } from 'lucide-react';
+import { Edit2, Check, X, Trash2 } from 'lucide-react';
 
 interface ApplicantsSectionProps {
   applicants: Applicant[];
@@ -12,6 +12,7 @@ interface ApplicantsSectionProps {
   onEditApplicant: (applicant: Applicant) => void;
   onDeleteApplicant: (id: string) => void;
   onStatusChange: (id: string, status: 'accepted' | 'pending' | 'rejected') => void;
+  onBulkDelete?: (ids: string[]) => void;
 }
 
 export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
@@ -19,12 +20,14 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
   isAdmin,
   onEditApplicant,
   onDeleteApplicant,
-  onStatusChange
+  onStatusChange,
+  onBulkDelete
 }) => {
   const [pendingCount, setPendingCount] = useState('');
   const [rejectedCount, setRejectedCount] = useState('');
   const [isEditingPending, setIsEditingPending] = useState(false);
   const [isEditingRejected, setIsEditingRejected] = useState(false);
+  const [selectedApplicants, setSelectedApplicants] = useState<Set<string>>(new Set());
 
   // Load saved custom counts from localStorage on component mount
   useEffect(() => {
@@ -63,6 +66,36 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
     const savedCount = localStorage.getItem('admin_rejected_count') || '';
     setRejectedCount(savedCount);
     setIsEditingRejected(false);
+  };
+
+  const handleToggleSelect = (id: string) => {
+    setSelectedApplicants(prev => {
+      const newSet = new Set(prev);
+      if (newSet.has(id)) {
+        newSet.delete(id);
+      } else {
+        newSet.add(id);
+      }
+      return newSet;
+    });
+  };
+
+  const handleSelectAll = () => {
+    const allIds = new Set(applicants.map(a => a.id));
+    setSelectedApplicants(allIds);
+  };
+
+  const handleUnselectAll = () => {
+    setSelectedApplicants(new Set());
+  };
+
+  const handleDeleteSelected = () => {
+    if (selectedApplicants.size === 0) return;
+    
+    if (window.confirm(`Are you sure you want to delete ${selectedApplicants.size} selected applicant(s)? This action cannot be undone.`)) {
+      onBulkDelete?.(Array.from(selectedApplicants));
+      setSelectedApplicants(new Set());
+    }
   };
 
   const StatusColumn = ({ 
@@ -147,6 +180,9 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
               onEdit={() => onEditApplicant(applicant)}
               onDelete={() => onDeleteApplicant(applicant.id)}
               onStatusChange={(status) => onStatusChange(applicant.id, status)}
+              isSelected={selectedApplicants.has(applicant.id)}
+              onToggleSelect={() => handleToggleSelect(applicant.id)}
+              showCheckbox={isAdmin}
             />
           ))
         ) : (
@@ -170,6 +206,35 @@ export const ApplicantsSection: React.FC<ApplicantsSectionProps> = ({
             Applicants can check their results below
           </p>
         </div>
+
+        {isAdmin && (
+          <div className="flex justify-center gap-3 mb-6">
+            <Button
+              onClick={handleSelectAll}
+              variant="outline"
+              className="bg-purple-50 border-purple-300 text-purple-700 hover:bg-purple-100"
+            >
+              Select All
+            </Button>
+            <Button
+              onClick={handleUnselectAll}
+              variant="outline"
+              className="bg-gray-50 border-gray-300 text-gray-700 hover:bg-gray-100"
+            >
+              Unselect All
+            </Button>
+            {selectedApplicants.size > 0 && (
+              <Button
+                onClick={handleDeleteSelected}
+                variant="destructive"
+                className="bg-red-600 hover:bg-red-700 text-white"
+              >
+                <Trash2 className="w-4 h-4 mr-2" />
+                Delete Selected ({selectedApplicants.size})
+              </Button>
+            )}
+          </div>
+        )}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <StatusColumn
